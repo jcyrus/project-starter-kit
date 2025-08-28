@@ -6,7 +6,7 @@ Thank you for your interest in contributing to the Project Starter Kit! This doc
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - pnpm 9.0.0+
 - Flutter SDK (for mobile development)
 - Git
@@ -73,6 +73,7 @@ We use conventional commits for clear change history:
 - `chore`: Maintenance tasks
 
 Examples:
+
 ```bash
 git commit -m "feat(api): add user authentication endpoints"
 git commit -m "fix(web): resolve mobile navigation issue"
@@ -206,6 +207,7 @@ For new features:
 ## Recognition
 
 Contributors will be recognized in:
+
 - GitHub contributor list
 - Release notes for significant contributions
 - README.md contributors section
