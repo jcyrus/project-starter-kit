@@ -1,8 +1,16 @@
 import Image from "next/image";
+import { TestButton } from "@workspace/ui/test-button";
+import { Button } from "@workspace/ui/components/button";
+import { ThemeToggle } from "@workspace/ui/components/theme-toggle";
 
 export default function Home() {
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+      {/* Theme toggle in top right */}
+      <div className="fixed top-4 right-4">
+        <ThemeToggle />
+      </div>
+
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <Image
           className="dark:invert"
@@ -12,6 +20,42 @@ export default function Home() {
           height={38}
           priority
         />
+
+        {/* Test section for shared Tailwind styles - Dashboard theme */}
+        <div className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white p-6 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-bold mb-4">
+            Dashboard - Shared Tailwind CSS! 📊
+          </h2>
+          <p className="mb-4">
+            This dashboard also uses the same shared Tailwind configuration.
+          </p>
+          <div className="flex gap-4">
+            <TestButton variant="primary" size="lg">
+              Dashboard Action
+            </TestButton>
+            <TestButton variant="secondary" size="md">
+              Settings
+            </TestButton>
+          </div>
+        </div>
+
+        {/* Test section for dark theme */}
+        <div className="bg-card text-card-foreground p-6 rounded-lg border shadow-sm">
+          <h2 className="text-2xl font-bold mb-4">
+            Admin Dashboard - Dark Theme! 🌙
+          </h2>
+          <p className="text-muted-foreground mb-4">
+            Admin interface with dark theme support. Toggle between light and
+            dark modes. Perfect for long admin sessions with reduced eye strain.
+          </p>
+          <div className="flex gap-4 flex-wrap">
+            <ThemeToggle />
+            <Button variant="default">Admin Action</Button>
+            <Button variant="secondary">View Reports</Button>
+            <Button variant="outline">Settings</Button>
+          </div>
+        </div>
+
         <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
           <li className="mb-2 tracking-[-.01em]">
             Get started by editing{" "}

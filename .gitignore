@@ -24,8 +24,12 @@ coverage
 # Build Outputs
 .next/
 out/
-build
-dist
+# Only ignore build/dist in apps, not packages
+apps/**/build
+apps/**/dist
+# Ignore dist in node_modules but not in our packages
+node_modules/**/dist
+node_modules/**/build
 
 # Flutter specific
 **/android/app/debug
@@ -40,7 +44,8 @@ dist
 
 # Flutter/Dart specific
 **/.dart_tool/
-**/packages/
+# Only ignore Flutter packages, not our workspace packages
+**/flutter/packages/
 **/.packages
 **/.flutter-plugins
 **/.flutter-plugins-dependencies

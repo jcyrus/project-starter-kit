@@ -4,11 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "flutter run",
+    "dev:ios": "flutter run -d ios",
     "build": "flutter build apk",
     "build:ios": "flutter build ipa",
     "build:android": "flutter build apk",
     "build:android:release": "flutter build apk --release",
     "clean": "flutter clean",
-    "test": "flutter test"
+    "test": "flutter test",
+    "devices": "flutter devices",
+    "emulators": "flutter emulators"
   }
 }

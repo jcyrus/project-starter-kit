@@ -6,7 +6,11 @@ A comprehensive full-stack starter kit built with Turborepo, featuring web appli
 
 This starter kit provides a complete foundation for modern applications that includes:
 
-- **Web Application** - Customer-facing application built with Next.js
+- **Web Application** - Customer-facing application built with5. Ensure all tests pass: `turbo test`
+
+6. Ensure code quality: `turbo lint`
+7. Build successfully: `turbo build`xt.js
+
 - **Admin Dashboard** - Admin interface for content and user management
 - **API** - NestJS backend for business logic and data management
 - **Mobile App** - Cross-platform mobile application built with Flutter (iOS & Android)
@@ -39,10 +43,10 @@ project-starter-kit/
 
 ### Shared Packages
 
-- **`@repo/ui`** - Reusable React component library used across web applications
-- **`@repo/eslint-config`** - Shared ESLint configurations for consistent code quality
-- **`@repo/typescript-config`** - Shared TypeScript configurations for type safety
-- **`@repo/tailwind-config`** - Centralized Tailwind CSS configuration for consistent styling
+- **`@workspace/ui`** - Reusable React component library with shadcn/ui components
+- **`@workspace/eslint-config`** - Shared ESLint configurations for consistent code quality
+- **`@workspace/typescript-config`** - Shared TypeScript configurations for type safety
+- **`@workspace/tailwind-config`** - Centralized Tailwind CSS configuration for consistent styling
 
 ## Getting Started
 
@@ -70,7 +74,7 @@ project-starter-kit/
 3. **Start development servers:**
 
    ```bash
-   pnpm dev
+   turbo dev
    ```
 
    This will start:
@@ -115,17 +119,17 @@ When starting a new project from this kit:
 Start all applications in development mode:
 
 ```bash
-pnpm dev
+turbo dev
 ```
 
 Start specific applications:
 
 ```bash
 # Web application (port 3001)
-pnpm --filter web dev
+turbo dev --filter=web
 
 # Dashboard (port 3002)
-pnpm --filter dashboard dev
+turbo dev --filter=dashboard
 
 # API server
 pnpm --filter api start:dev
@@ -139,17 +143,17 @@ pnpm --filter mobile dev
 Build all applications:
 
 ```bash
-pnpm build
+turbo build
 ```
 
 Build specific applications:
 
 ```bash
 # Build web application
-pnpm --filter web build
+turbo build --filter=web
 
 # Build dashboard
-pnpm --filter dashboard build
+turbo build --filter=dashboard
 
 # Build API
 pnpm --filter api build
@@ -165,19 +169,19 @@ pnpm --filter mobile build:android
 Run tests across all packages:
 
 ```bash
-pnpm test
+turbo test
 ```
 
 Lint code:
 
 ```bash
-pnpm lint
+turbo lint
 ```
 
 Type checking:
 
 ```bash
-pnpm check-types
+turbo check-types
 ```
 
 Format code:
@@ -190,11 +194,11 @@ pnpm format
 
 ### 🚀 **Ready-to-Use Tech Stack**
 
-- **Frontend**: Next.js 15 with Tailwind CSS and TypeScript
+- **Frontend**: Next.js 15 with Tailwind CSS, shadcn/ui, and TypeScript
 - **Backend**: NestJS with TypeScript
 - **Mobile**: Flutter for iOS and Android
 - **Monorepo**: Turborepo for optimized builds and development
-- **Shared Packages**: Common UI components, configs, and utilities
+- **Shared Packages**: Common UI components with shadcn/ui, configs, and utilities
 
 ### 🛠 **Developer Experience**
 
@@ -212,12 +216,165 @@ pnpm format
 
 ### Shared Tailwind Configuration
 
-This monorepo includes a centralized Tailwind CSS configuration (`@repo/tailwind-config`) that:
+This monorepo uses a centralized Tailwind CSS configuration following the [Turborepo Tailwind guide](https://turborepo.com/docs/guides/tools/tailwind):
 
-- ✅ Eliminates duplication of Tailwind dependencies across Next.js apps
-- ✅ Ensures consistent styling between web and dashboard applications
-- ✅ Provides centralized theme management and design tokens
-- ✅ Simplifies maintenance and updates
+#### 🏗️ Architecture
+
+```
+packages/
+├── tailwind-config/
+│   ├── package.json           # Tailwind dependencies
+│   ├── shared-styles.css      # Base Tailwind imports and custom styles
+│   └── postcss.config.js      # PostCSS configuration
+└── ui/
+    ├── src/
+    │   ├── styles.css         # Imports from @workspace/tailwind-config
+    │   └── *.tsx              # UI components with Tailwind classes
+    └── dist/
+        └── index.css          # Compiled Tailwind styles
+
+apps/
+├── web/
+│   ├── src/app/globals.css    # Imports Tailwind + shared config + UI styles
+│   └── postcss.config.js      # Uses shared PostCSS config
+└── dashboard/
+    ├── src/app/globals.css    # Imports Tailwind + shared config + UI styles
+    └── postcss.config.js      # Uses shared PostCSS config
+```
+
+#### 🎯 Benefits
+
+- ✅ **Consistency**: Shared base styles across all applications
+- ✅ **Maintainability**: Single source of truth for Tailwind configuration
+- ✅ **Scalability**: Easy to add new apps that inherit the shared styles
+- ✅ **Performance**: Optimized build pipeline with Turbo caching
+- ✅ **DX**: Hot reloading works seamlessly in development
+
+#### 🔄 CSS Import Chain
+
+The CSS import chain ensures proper style ordering:
+
+```css
+/* In apps/*/src/app/globals.css */
+@import 'tailwindcss';                    // Tailwind CSS v4
+@import '@workspace/tailwind-config';     // Shared base styles
+@import '@workspace/ui/styles.css';       // UI component styles
+
+/* App-specific styles can go here */
+```
+
+#### 📝 Usage
+
+**Building Styles:**
+
+```bash
+# Build UI package styles
+turbo build:styles --filter=@workspace/ui
+
+# Build all packages including styles
+turbo build
+```
+
+**Adding New shadcn/ui Components:**
+
+```bash
+# From any app directory, add components to the shared UI package
+cd apps/web  # or apps/dashboard
+pnpm dlx shadcn@canary add [component-name]
+
+# Example: Add button, card, input components
+pnpm dlx shadcn@canary add button card input
+```
+
+**Using shadcn/ui Components:**
+
+```tsx
+import { Button } from "@workspace/ui/components/button";
+import { Card, CardContent, CardHeader } from "@workspace/ui/components/card";
+
+export function MyComponent() {
+  return (
+    <Card>
+      <CardHeader>
+        <h2>My Card</h2>
+      </CardHeader>
+      <CardContent>
+        <Button variant="default">Click me</Button>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+**Adding Custom Components:**
+
+1. Create component in `packages/ui/src/components/`
+2. Use Tailwind classes and shadcn/ui utilities (`cn` function)
+3. Export from the UI package
+4. Import in your apps
+
+**Customizing Styles:**
+
+- **Base styles**: Edit `packages/tailwind-config/shared-styles.css`
+- **Component styles**: Add to UI components in `packages/ui/src/`
+- **App-specific styles**: Add to individual app's `globals.css`
+
+## 🎨 Theme System
+
+The project includes a comprehensive dark/light theme system powered by next-themes:
+
+### Features
+
+- **Automatic theme detection** - matches your system preference by default
+- **Manual theme toggle** - users can override system preference
+- **Persistent theme selection** - remembers user choice across sessions
+- **Custom primary colors** - beautiful purple-based color scheme
+- **Smooth transitions** - no flash on theme change
+- **Shared across apps** - consistent theming for web and dashboard
+
+### Theme Components
+
+```tsx
+// Theme Provider (already set up in app layouts)
+import { ThemeProvider } from "@workspace/ui/components/theme-provider"
+
+// Theme Toggle Button
+import { ThemeToggle } from "@workspace/ui/components/theme-toggle"
+
+// Usage in your components
+<ThemeToggle /> {/* Renders sun/moon toggle button */}
+```
+
+### Customizing Colors
+
+Edit the CSS variables in `packages/tailwind-config/shared-styles.css`:
+
+```css
+:root {
+  --primary: 262 73% 57%; /* Purple primary color */
+  --primary-foreground: 0 0% 98%; /* White text on primary */
+  --secondary: 240 4.8% 95.9%; /* Light gray */
+  /* ... more variables ... */
+}
+
+.dark {
+  --primary: 263 70% 50%; /* Darker purple for dark mode */
+  --primary-foreground: 0 0% 98%; /* White text on primary */
+  --secondary: 240 3.7% 15.9%; /* Dark gray */
+  /* ... more variables ... */
+}
+```
+
+### Theme-Aware Components
+
+All shadcn/ui components automatically adapt to the current theme:
+
+```tsx
+<Button variant="default">Automatically themed</Button>
+<Card className="bg-card text-card-foreground border">
+  Content adapts to light/dark theme
+</Card>
+```
 
 ### Enhanced Turborepo Pipeline
 
@@ -359,12 +516,12 @@ This project is designed to be a comprehensive starter kit for modern full-stack
 
 Planned shared packages for continued growth:
 
-- **`@repo/database`** - Shared database schema and models
-- **`@repo/types`** - Shared TypeScript types between frontend and backend
-- **`@repo/utils`** - Common utility functions
-- **`@repo/env-config`** - Environment variable validation
-- **`@repo/test-utils`** - Shared testing helpers and mocks
-- **`@repo/auth`** - Authentication utilities and components
+- **`@workspace/database`** - Shared database schema and models
+- **`@workspace/types`** - Shared TypeScript types between frontend and backend
+- **`@workspace/utils`** - Common utility functions
+- **`@workspace/env-config`** - Environment variable validation
+- **`@workspace/test-utils`** - Shared testing helpers and mocks
+- **`@workspace/auth`** - Authentication utilities and components
 
 ## Useful Links
 

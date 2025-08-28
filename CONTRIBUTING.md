@@ -153,8 +153,8 @@ When adding new shared packages:
 
 ### Frontend (Next.js Apps)
 
-- Use Tailwind CSS for styling via `@repo/tailwind-config`
-- Utilize shared components from `@repo/ui`
+- Use Tailwind CSS for styling via `@workspace/tailwind-config`
+- Utilize shared components from `@workspace/ui`
 - Follow Next.js 15 best practices
 - Ensure responsive design
 

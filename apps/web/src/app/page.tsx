@@ -1,8 +1,16 @@
 import Image from "next/image";
+import { TestButton } from "@workspace/ui/test-button";
+import { Button } from "@workspace/ui/components/button";
+import { ThemeToggle } from "@workspace/ui/components/theme-toggle";
 
 export default function Home() {
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+      {/* Theme toggle in top right */}
+      <div className="fixed top-4 right-4">
+        <ThemeToggle />
+      </div>
+
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <Image
           className="dark:invert"
@@ -12,6 +20,64 @@ export default function Home() {
           height={38}
           priority
         />
+
+        {/* Test section for shared Tailwind styles */}
+        <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-bold mb-4">
+            Shared Tailwind CSS Working! 🎉
+          </h2>
+          <p className="mb-4">
+            This section uses Tailwind classes from the shared configuration.
+          </p>
+          <div className="flex gap-4">
+            <TestButton variant="primary" size="md">
+              Primary Button
+            </TestButton>
+            <TestButton variant="secondary" size="sm">
+              Secondary Button
+            </TestButton>
+          </div>
+        </div>
+
+        {/* Test section for dark theme */}
+        <div className="bg-card text-card-foreground p-6 rounded-lg border shadow-sm">
+          <h2 className="text-2xl font-bold mb-4">Dark Theme Support! 🌙</h2>
+          <p className="text-muted-foreground mb-4">
+            Click the theme toggle in the top-right to switch between light and
+            dark modes. The theme will persist across sessions and respect your
+            system preference.
+          </p>
+          <div className="flex gap-4 flex-wrap">
+            <ThemeToggle />
+            <Button variant="default">Themed Button</Button>
+            <Button variant="secondary">Secondary</Button>
+            <Button variant="outline">Outline</Button>
+          </div>
+        </div>
+
+        {/* Test section for shadcn/ui components */}
+        <div className="bg-card text-card-foreground p-6 rounded-lg border shadow-sm">
+          <h2 className="text-2xl font-bold mb-4">
+            shadcn/ui Components Working! ✨
+          </h2>
+          <p className="text-muted-foreground mb-4">
+            These are shadcn/ui Button components with proper theming.
+          </p>
+          <div className="flex gap-4 flex-wrap">
+            <Button variant="default">Default Button</Button>
+            <Button variant="secondary">Secondary</Button>
+            <Button variant="destructive">Destructive</Button>
+            <Button variant="outline">Outline</Button>
+            <Button variant="ghost">Ghost</Button>
+            <Button variant="link">Link</Button>
+          </div>
+          <div className="flex gap-4 mt-4">
+            <Button size="sm">Small</Button>
+            <Button size="default">Default</Button>
+            <Button size="lg">Large</Button>
+          </div>
+        </div>
+
         <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
           <li className="mb-2 tracking-[-.01em]">
             Get started by editing{" "}

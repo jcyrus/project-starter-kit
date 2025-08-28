@@ -1,19 +1,4 @@
-import baseConfig from "@repo/tailwind-config";
-
-/** @type {import('tailwindcss').Config} */
-const config = {
-  ...baseConfig,
-  content: [
-    "./src/**/*.{js,ts,jsx,tsx,mdx}",
-    "../../packages/ui/src/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
-  theme: {
-    ...baseConfig.theme,
-    extend: {
-      ...baseConfig.theme.extend,
-      // Web-specific theme extensions can go here
-    },
-  },
-};
-
+// This file is no longer needed as we're using the shared @workspace/tailwind-config
+// Configuration is now handled through CSS imports in globals.css
+const config = {};
 export default config;
