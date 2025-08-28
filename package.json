@@ -1,10 +1,17 @@
 {
-  "name": "venuebooker",
+  "name": "project-starter-kit",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
+    "test": "turbo run test",
+    "start": "turbo run start",
+    "clean": "turbo run clean",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types"
   },
