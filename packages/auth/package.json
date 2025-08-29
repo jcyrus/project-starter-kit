@@ -1,0 +1,31 @@
+{
+  "name": "@workspace/auth",
+  "version": "0.1.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./components/*": "./src/*.tsx",
+    "./services/*": "./src/*.ts",
+    "./*": "./src/*.ts"
+  },
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "lint": "eslint src/",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "axios": "^1.11.0",
+    "js-cookie": "^3.0.5"
+  },
+  "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
+    "@types/node": "^22.15.3",
+    "@types/react": "19.1.0",
+    "@workspace/typescript-config": "workspace:*",
+    "typescript": "^5"
+  },
+  "peerDependencies": {
+    "react": "19.1.0"
+  }
+}

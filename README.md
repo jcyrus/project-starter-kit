@@ -114,7 +114,168 @@ When starting a new project from this kit:
 3. **Database Configuration:**
    - Configure your preferred database in the API
    - Set up authentication and user management
-   - Define your data models and API endpoints### Development
+   - Define your data models and API endpoints
+
+## 🗄️ Database Setup (PostgreSQL)
+
+The API uses PostgreSQL with TypeORM for data persistence and includes a complete authentication system.
+
+### Prerequisites
+
+- PostgreSQL 12+ installed locally or access to a PostgreSQL server
+- Database administration tool (optional): pgAdmin, TablePlus, or psql CLI
+
+### Database Setup Steps
+
+1. **Install PostgreSQL:**
+
+   **macOS (using Homebrew):**
+
+   ```bash
+   brew install postgresql
+   brew services start postgresql
+   ```
+
+   **Ubuntu/Debian:**
+
+   ```bash
+   sudo apt update
+   sudo apt install postgresql postgresql-contrib
+   sudo systemctl start postgresql
+   ```
+
+   **Windows:**
+   Download from https://www.postgresql.org/download/windows/
+
+2. **Create Database and User:**
+
+   Connect to PostgreSQL as superuser:
+
+   ```bash
+   psql -U postgres
+   ```
+
+   Create database and user:
+
+   ```sql
+   -- Create the database
+   CREATE DATABASE database_name;
+
+   -- Create user with password
+   CREATE USER database_user WITH ENCRYPTED PASSWORD 'your-own-password';
+
+   -- Grant privileges
+   GRANT ALL PRIVILEGES ON DATABASE database_name TO database_user;
+
+   -- Grant schema privileges (for newer PostgreSQL versions)
+   \c database_name
+   GRANT ALL ON SCHEMA public TO database_user;
+   GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO database_user;
+   GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO database_user;
+
+   -- Exit psql
+   \q
+   ```
+
+3. **Configure Environment Variables:**
+
+   Update `apps/api/.env` with your database credentials:
+
+   ```env
+   # Database Configuration
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_USERNAME=database_user
+   DB_PASSWORD=your-own-password
+   DB_DATABASE=database_name
+
+   # JWT Configuration
+   JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+   JWT_EXPIRES_IN=7d
+
+   # App Configuration
+   PORT=3000
+   NODE_ENV=development
+   ```
+
+4. **Test Database Connection:**
+
+   Start the API server:
+
+   ```bash
+   cd apps/api
+   pnpm run start:dev
+   ```
+
+   If successful, you should see:
+
+   ```
+   🚀 API Server running on http://localhost:3000
+   ```
+
+### Authentication System
+
+The API includes a complete authentication system with:
+
+- **User Registration & Login** - JWT-based authentication
+- **Password Management** - Secure hashing with bcrypt
+- **Role-Based Access Control** - Admin, User, Moderator roles
+- **Profile Management** - User profile updates
+- **Session Management** - Token-based sessions
+
+**Available Endpoints:**
+
+- `POST /auth/register` - Create new user account
+- `POST /auth/login` - User login
+- `GET /auth/profile` - Get user profile (protected)
+- `PUT /auth/profile` - Update user profile (protected)
+- `POST /auth/change-password` - Change password (protected)
+- `POST /auth/logout` - User logout (protected)
+
+**Example Usage:**
+
+```bash
+# Register a new user
+curl -X POST http://localhost:3000/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "admin@example.com",
+    "firstName": "Admin",
+    "lastName": "User",
+    "password": "SecurePassword123"
+  }'
+
+# Login
+curl -X POST http://localhost:3000/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "admin@example.com",
+    "password": "SecurePassword123"
+  }'
+```
+
+### Database Schema
+
+The system automatically creates these tables:
+
+- **users** - User accounts with authentication and profile data
+- Additional tables will be created as you add more entities
+
+The database schema is automatically synchronized in development mode. In production, use migrations for schema changes.
+
+### Troubleshooting
+
+**Connection Issues:**
+
+- Ensure PostgreSQL is running: `brew services list | grep postgresql`
+- Check database exists: `psql -U developer -d database_name -c "\dt"`
+- Verify user permissions: Ensure the user has proper privileges
+
+**Authentication Issues:**
+
+- Check JWT_SECRET is set in environment variables
+- Ensure passwords meet minimum requirements (6+ characters)
+- Verify CORS is configured for your frontend domains### Development
 
 Start all applications in development mode:
 
@@ -195,8 +356,10 @@ pnpm format
 ### 🚀 **Ready-to-Use Tech Stack**
 
 - **Frontend**: Next.js 15 with Tailwind CSS, shadcn/ui, and TypeScript
-- **Backend**: NestJS with TypeScript
+- **Backend**: NestJS with TypeScript, PostgreSQL, and JWT Authentication
 - **Mobile**: Flutter for iOS and Android
+- **Database**: PostgreSQL with TypeORM for robust data management
+- **Authentication**: Complete JWT-based auth system with role-based access control
 - **Monorepo**: Turborepo for optimized builds and development
 - **Shared Packages**: Common UI components with shadcn/ui, configs, and utilities
 
